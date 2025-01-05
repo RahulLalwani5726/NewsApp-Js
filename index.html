@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive News Website</title>
+    <title>News Website</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Global Reset */
@@ -221,10 +221,10 @@
 
     <!-- JavaScript Section -->
     <script>
-        const API_KEY = "245204b29c3c4e4b8ac26e33b4e083f0";
+        const API = "245204b29c3c4e4b8ac26e33b4e083f0";
 
         async function news() {
-            let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
+            let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API}`;
             let Response = await fetch(url);
             let data = await Response.json();
 
@@ -233,7 +233,7 @@
 
         async function SearchIngNews() {
             let category = document.querySelector('#topic').value || document.querySelector('#topic-footer').value;
-            let url = `https://newsapi.org/v2/everything?q=${category}&sortBy=popularity&apiKey=${API_KEY}`;
+            let url = `https://newsapi.org/v2/everything?q=${category}&sortBy=popularity&apiKey=${API}`;
 
             let Response = await fetch(url);
             let data = await Response.json();
