@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive News Website</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header Section */
+        .User_Input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 20px 30px;
+            background-color: black;
+            color: aliceblue;
+        }
+
+        .input-Option {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        #topic {
+            width: 60%;
+            margin: 5px;
+            height: 35px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        button {
+            width: 110px;
+            height: 35px;
+            border-radius: 20px;
+        }
+
+        /* Main News Section */
+        .Main_News {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            background-color: aliceblue;
+            padding: 20px;
+        }
+
+        .News {
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .News-Heading-Topic {
+            padding: 15px;
+        }
+
+        .News-Heading-Topic h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .News-Heading-Topic p {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .Img-Date_Time {
+            text-align: center;
+        }
+
+        .News_Image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Footer Section */
+        .Footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: black;
+            color: aliceblue;
+            padding: 30px 20px;
+        }
+
+        .Footer h1 {
+            font-size: 1.5rem;
+        }
+
+        .input-Option-Footer {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .input-Option-Footer input {
+            flex: 1;
+            height: 35px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .Soical-Link {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .Soical-Link img {
+            width: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, filter 0.3s;
+            filter: grayscale(50%);
+        }
+
+        .Soical-Link img:hover {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .User_Input {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .input-Option {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            #topic {
+                width: 80%;
+            }
+
+            .Footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .News-Heading-Topic h2 {
+                font-size: 1rem;
+            }
+
+            .News-Heading-Topic p {
+                font-size: 0.8rem;
+            }
+
+            button {
+                width: 100px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body onload="news()">
+
+    <!-- Header Section -->
+    <div class="User_Input">
+        <h1>Times Of News</h1>
+        <div class="input-Option">
+            <input id="topic" type="text" placeholder="Category">
+            <button type="submit" onclick="SearchIngNews()">Search</button>
+        </div>
+    </div>
+
+    <!-- News Section -->
+    <div class="Main_News"></div>
+
+    <!-- Footer Section -->
+    <footer class="Footer">
+        <div style="text-align: center;">
+            <h1><b>Times Of India</b></h1>
+        </div>
+        <div>
+            <div class="input-Option-Footer">
+                <input id="topic-footer" type="text" placeholder="Category">
+                <button type="submit" onclick="SearchIngNews()">Search</button>
+            </div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <div class="Soical-Link">
+                <img src="https://cdn2.iconfinder.com/data/icons/social-media-2259/512/search-512.png" class="google">
+                <img src="https://cdn0.iconfinder.com/data/icons/social-media-circle-6/1024/instagram-512.png"
+                    class="insta">
+                <img src="https://cdn2.iconfinder.com/data/icons/social-media-applications/64/social_media_applications_23-whatsapp-512.png"
+                    class="whatspp">
+                <img src="https://cdn4.iconfinder.com/data/icons/social-media-flat-7/64/Social-media_Youtube-512.png"
+                    class="yt">
+                <img src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-facebook-square2-512.png"
+                    class="facebook">
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        const API_KEY = "245204b29c3c4e4b8ac26e33b4e083f0";
+
+        async function news() {
+            let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
+            let Response = await fetch(url);
+            let data = await Response.json();
+
+            renderNews(data.articles);
+        }
+
+        async function SearchIngNews() {
+            let category = document.querySelector('#topic').value || document.querySelector('#topic-footer').value;
+            let url = `https://newsapi.org/v2/everything?q=${category}&sortBy=popularity&apiKey=${API_KEY}`;
+
+            let Response = await fetch(url);
+            let data = await Response.json();
+
+            if (!Response.ok || data.articles.length === 0) {
+                document.querySelector(".Main_News").innerHTML = `<h2>No News Found for "${category}"</h2>`;
+                return;
+            }
+
+            renderNews(data.articles);
+        }
+
+        function renderNews(articles) {
+            let NewsBody = document.querySelector(".Main_News");
+            NewsBody.innerHTML = articles.map(article => `
+                <section class="News">
+                    <aside class="Img-Date_Time">
+                        <img class="News_Image" src="${article.urlToImage || ''}" alt="News Image">
+                    </aside>
+                    <section class="News-Heading-Topic">
+                        <h2>${article.title}</h2>
+                        <p>${article.description || ''}</p>
+                        <a href="${article.url}" target="_blank">Read More</a>
+                    </section>
+                </section>
+            `).join('');
+        }
+    </script>
+</body>
+
+</html>
